@@ -13,8 +13,20 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::latest()->paginate(4);
         return view('task.index', compact('tasks'));
+    }
+
+    public function active()
+    {
+        $tasks = Task::where('status', 'pending')->latest()->paginate(4);
+        return view('task.active', compact('tasks'));
+    }
+
+    public function completed()
+    {
+        $tasks = Task::where('status', 'completed')->latest()->paginate(4);
+        return view('task.completed', compact('tasks'));
     }
 
     /**

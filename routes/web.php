@@ -18,6 +18,12 @@ Route::get('/dashboard', function () {
 
 
 Route::post('tasks/complete/{task}', [TaskController::class, 'complete'])->name('tasks.complete');
+
+
+Route::get('tasks/active', [TaskController::class, 'active'])->name('tasks.active');
+Route::get('tasks/completed', [TaskController::class, 'completed'])->name('tasks.completed');
+
+
 Route::resource('tasks', TaskController::class);
 
 Route::middleware('auth')->group(function () {
