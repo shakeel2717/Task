@@ -13,19 +13,22 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::latest()->paginate(4);
+        $tasks = auth()->user()->tasks()->latest()->paginate(4);
         return view('task.index', compact('tasks'));
     }
 
     public function active()
     {
-        $tasks = Task::where('status', 'pending')->latest()->paginate(4);
+        $tasks = Task::where('user_id', auth()->user()->id)
+            ->where('status', 'pending')
+            ->latest()
+            ->paginate(4);
         return view('task.active', compact('tasks'));
     }
 
     public function completed()
     {
-        $tasks = Task::where('status', 'completed')->latest()->paginate(4);
+        $tasks = Task::where('user_id', auth()->user()->id)->where('status', 'completed')->latest()->paginate(4);
         return view('task.completed', compact('tasks'));
     }
 
@@ -43,7 +46,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $task = new Task();
-        $task->user_id = 1;
+        $task->user_id = auth()->user()->id;
         $task->title = $request->title;
         $task->description = $request->description;
         $task->status = 'pending';
